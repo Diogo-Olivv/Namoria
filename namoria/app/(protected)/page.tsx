@@ -36,7 +36,7 @@ export default async function HomePage() {
   return (
     <div className="mx-auto w-full max-w-3xl p-4">
       <div className="mb-5 flex items-center justify-between">
-        <h1 className="text-xl font-semibold">Álbuns</h1>
+        <h1 className="font-heading text-3xl font-semibold">Álbuns</h1>
         <CreateAlbumButton />
       </div>
 
@@ -61,11 +61,11 @@ export default async function HomePage() {
               <CoverCollage urls={covers[i]} />
               <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 to-transparent" />
               <div className="relative p-4">
-                <h2 className="text-lg font-semibold text-white drop-shadow">
+                <h2 className="font-heading text-xl font-semibold text-white drop-shadow">
                   {album.title}
                 </h2>
                 {album.description && (
-                  <p className="mt-0.5 line-clamp-1 text-sm text-white/80 drop-shadow">
+                  <p className="mt-0.5 line-clamp-1 text-sm text-white/85 drop-shadow">
                     {album.description}
                   </p>
                 )}

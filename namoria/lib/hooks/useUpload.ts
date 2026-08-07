@@ -121,10 +121,13 @@ export function useUpload() {
         }),
       ]);
 
-      // 4. Persist metadata.
+      // 4. Persist metadata. Default the moment's date to the file's
+      // last-modified time so photos are dated without manual input.
       const media = await insertMedia({
         album_id: albumId,
         type: isVideo ? "video" : "image",
+        title: null,
+        taken_at: new Date(file.lastModified || Date.now()).toISOString(),
         display_key: web.key,
         original_key: vault.key,
         width,

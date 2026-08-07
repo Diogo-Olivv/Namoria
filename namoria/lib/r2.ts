@@ -1,6 +1,11 @@
 import "server-only";
 import { randomUUID } from "node:crypto";
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import {
+  S3Client,
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectsCommand,
+} from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import { serverEnv } from "@/lib/env";
 
@@ -45,6 +50,22 @@ export async function presignGet(key: string): Promise<string> {
     new GetObjectCommand({ Bucket: bucket, Key: key }),
     { expiresIn: GET_TTL_SECONDS },
   );
+}
+
+/** Deletes objects from R2 in batches (max 1000 per request). No-op if empty. */
+export async function deleteObjects(keys: string[]): Promise<void> {
+  const clean = keys.filter((k) => k && k.length > 0);
+  if (clean.length === 0) return;
+  const { s3, bucket } = r2();
+  for (let i = 0; i < clean.length; i += 1000) {
+    const batch = clean.slice(i, i + 1000);
+    await s3.send(
+      new DeleteObjectsCommand({
+        Bucket: bucket,
+        Delete: { Objects: batch.map((Key) => ({ Key })), Quiet: true },
+      }),
+    );
+  }
 }
 
 /** `web/<albumId>/<uuid>.webp` — optimized display asset (thumb/poster). */

@@ -12,6 +12,8 @@ export interface Media {
   id: string;
   album_id: string;
   type: MediaType;
+  title: string | null;
+  taken_at: string | null;
   display_key: string;
   original_key: string;
   width: number | null;

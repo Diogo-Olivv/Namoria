@@ -16,8 +16,12 @@ export default async function LoginPage({
         <ThemeToggle />
       </div>
       <div className="text-center">
-        <h1 className="text-brand text-4xl font-bold tracking-tight">Namoria</h1>
-        <p className="mt-2 text-muted-foreground">Nossos álbuns, só nossos.</p>
+        <h1 className="text-brand font-heading text-5xl font-bold tracking-tight">
+          Namoria
+        </h1>
+        <p className="mt-3 text-lg text-muted-foreground">
+          Nossos álbuns, só nossos.
+        </p>
       </div>
       <LoginForm redirect={redirect} />
     </main>

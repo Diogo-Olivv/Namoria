@@ -60,7 +60,7 @@ export function UploadFab({
             {!isUploading && (
               <button
                 onClick={reset}
-                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                className="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 Limpar
               </button>
@@ -68,7 +68,7 @@ export function UploadFab({
           </div>
           <ul className="flex max-h-56 flex-col gap-2.5 overflow-y-auto">
             {tasks.map((t) => (
-              <li key={t.id} className="text-xs">
+              <li key={t.id} className="text-sm">
                 <div className="mb-1 flex items-center justify-between gap-2">
                   <span className="truncate text-muted-foreground">{t.name}</span>
                   <span

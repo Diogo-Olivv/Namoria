@@ -8,6 +8,8 @@ criar/configurar. Nada aqui pode (nem deve) ser feito pelo agente.
 1. Crie um projeto em https://supabase.com.
 2. **SQL Editor** → rode o schema + RLS da seção 4 do `SPEC.md` (tabelas `albums`,
    `media`, índices e policies `authenticated`).
+   - Depois rode a migração **`sql/002_media_title_takenat.sql`** (adiciona
+     `title` e `taken_at` em `media`, usados para nome e data de cada foto).
 3. **Authentication → Providers → Email**: mantenha ativo, mas
    **Authentication → Sign In / Providers → "Allow new users to sign up" = OFF**
    (signup público desabilitado — só 2 contas manuais).
