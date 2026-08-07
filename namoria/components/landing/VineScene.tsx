@@ -12,7 +12,9 @@ export interface VineApi {
 }
 
 const PANEL_BG = 0x16241a;
-const TRELLIS_Y = 2.6;
+// Trellis sits well below the top edge so the flower's petals open with
+// headroom instead of being clipped at the top of the frame.
+const TRELLIS_Y = 1.7;
 const BASE_Y = -3.2;
 const HEIGHT = TRELLIS_Y - BASE_Y;
 

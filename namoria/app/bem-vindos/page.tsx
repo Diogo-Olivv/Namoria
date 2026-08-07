@@ -5,7 +5,7 @@ import { AcanthusRule } from "@/components/landing/Acanthus";
 import { Button } from "@/components/ui/button";
 
 export const metadata: Metadata = {
-  title: "Namoria — Nossos álbuns, só nossos",
+  title: "Namoria · Nossos álbuns, só nossos",
   description:
     "Um jardim privado de memórias para casais: guarde fotos e vídeos como quem prensa flores num livro.",
 };
@@ -17,7 +17,7 @@ const CARDS = [
   },
   {
     title: "Só de vocês dois",
-    body: "Um jardim fechado. Nada é público, nada é sugerido a ninguém — só quem tem a chave entra.",
+    body: "Um jardim fechado. Nada é público, nada é sugerido a ninguém. Só quem tem a chave entra.",
   },
   {
     title: "Fácil de colher",

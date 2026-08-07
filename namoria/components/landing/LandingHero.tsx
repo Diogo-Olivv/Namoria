@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { AcanthusCorner } from "@/components/landing/Acanthus";
 import type { VineApi } from "@/components/landing/VineScene";
 
-// three.js touches the DOM/WebGL — load only on the client.
+// three.js touches the DOM/WebGL, so load it only on the client.
 const VineScene = dynamic(
   () => import("@/components/landing/VineScene").then((m) => m.VineScene),
   { ssr: false },
@@ -21,14 +21,19 @@ const BLOOM_AT = 0.94; // progress where the tips converge at the trellis
 export function LandingHero() {
   const apiRef = useRef<VineApi | null>(null);
   const trackRef = useRef<HTMLDivElement>(null);
-  // Reduced motion → VineScene self-initialises bloomed; skip the tall scroll
-  // track so there's no dead scroll. Lazy init avoids setState-in-effect.
+
+  // These drive BEHAVIOUR only (never className), so there's no SSR/hydration
+  // mismatch — the responsive layout below is pure CSS (lg: breakpoints).
   const [reducedMotion] = useState(
     () =>
       typeof window !== "undefined" &&
       window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
-  const [bloomed, setBloomed] = useState(() => reducedMotion);
+  const [isDesktop] = useState(
+    () =>
+      typeof window !== "undefined" &&
+      window.matchMedia("(min-width: 1024px)").matches,
+  );
   // Fewer particles on small screens for a smooth first paint.
   const [nodeCount] = useState(() =>
     typeof window !== "undefined" && window.innerWidth < 640 ? 48 : 90,
@@ -37,31 +42,46 @@ export function LandingHero() {
   useEffect(() => {
     if (typeof window === "undefined" || reducedMotion) return;
 
-    gsap.registerPlugin(ScrollTrigger);
+    // Phones: a gentle autonomous loop (grow → bloom → reset). No scroll-jacking,
+    // which felt broken on mobile.
+    if (!isDesktop) {
+      let raf = 0;
+      const start = performance.now();
+      const CYCLE = 7000;
+      const loop = (now: number) => {
+        const t = ((now - start) % CYCLE) / CYCLE;
+        const p = t < 0.72 ? t / 0.72 : 1; // grow, then hold bloomed
+        apiRef.current?.setProgress(p);
+        apiRef.current?.setBloom(p >= BLOOM_AT);
+        raf = requestAnimationFrame(loop);
+      };
+      raf = requestAnimationFrame(loop);
+      return () => cancelAnimationFrame(raf);
+    }
 
-    // Lenis smooth scroll, married to the GSAP ticker so the scrub never stutters.
+    // Desktop: Lenis smooth scroll + ScrollTrigger map the tall track to progress.
+    gsap.registerPlugin(ScrollTrigger);
     const lenis = new Lenis();
     lenis.on("scroll", ScrollTrigger.update);
     const onTick = (time: number) => lenis.raf(time * 1000);
     gsap.ticker.add(onTick);
     gsap.ticker.lagSmoothing(0);
 
-    // No GSAP pin — the hero is pinned with CSS `position: sticky` (robust inside
+    // No GSAP pin: the hero is pinned with CSS `position: sticky` (robust inside
     // flex/Lenis layouts). ScrollTrigger only maps the track's scroll to progress.
     let lastBloom = false;
     const trigger = ScrollTrigger.create({
       trigger: trackRef.current,
       start: "top top",
       end: "bottom bottom",
-      scrub: 1.1, // inertia — a body with weight, not glued to the scroll
+      scrub: 1.1, // inertia: a body with weight, not glued to the scroll
       onUpdate: (self) => {
         const p = self.progress;
         apiRef.current?.setProgress(p);
         const shouldBloom = p >= BLOOM_AT;
         if (shouldBloom !== lastBloom) {
           lastBloom = shouldBloom;
-          apiRef.current?.setBloom(shouldBloom);
-          setBloomed(shouldBloom);
+          apiRef.current?.setBloom(shouldBloom); // the flower opens in the scene
         }
       },
     });
@@ -71,22 +91,15 @@ export function LandingHero() {
       gsap.ticker.remove(onTick);
       lenis.destroy();
     };
-  }, [reducedMotion]);
+  }, [reducedMotion, isDesktop]);
 
   return (
-    // Tall track drives the scroll; the inner hero sticks to the viewport while
-    // the track scrolls past. Reduced motion collapses the track to one screen.
-    <div
-      ref={trackRef}
-      className={`relative ${reducedMotion ? "" : "h-[250vh]"}`}
-    >
-      <div
-        className={`flex flex-col overflow-hidden lg:flex-row ${
-          reducedMotion ? "min-h-screen" : "sticky top-0 h-screen"
-        }`}
-      >
+    // On desktop the tall track drives the scroll while the inner hero sticks to
+    // the viewport. On mobile (no lg:) it collapses to a normal stacked layout.
+    <div ref={trackRef} className="relative lg:h-[250vh]">
+      <div className="flex flex-col overflow-hidden lg:sticky lg:top-0 lg:h-screen lg:flex-row">
         {/* Left — text on paper */}
-        <div className="relative flex flex-1 items-center px-6 py-16 sm:px-10 lg:px-16">
+        <div className="relative flex flex-1 items-center px-6 py-12 sm:px-10 lg:px-16 lg:py-16">
           <div className="relative max-w-md">
             <p className="font-mono text-xs tracking-[0.35em] text-forest/70 uppercase">
               Álbum de memórias
@@ -99,7 +112,7 @@ export function LandingHero() {
             </p>
             <p className="mt-4 max-w-sm text-lg leading-relaxed text-muted-foreground">
               Guarde as fotos e os vídeos de vocês como quem prensa flores num
-              livro — um jardim privado que só floresce a dois.
+              livro, um jardim privado que só floresce a dois.
             </p>
             <Button
               variant="brand"
@@ -113,28 +126,9 @@ export function LandingHero() {
           </div>
         </div>
 
-        {/* Right — the dusk garden panel */}
-        <div className="relative min-h-[52vh] flex-1 overflow-hidden bg-dusk lg:min-h-0">
+        {/* Right — the dusk garden panel (fixed height on mobile, fills on desktop) */}
+        <div className="relative h-[58vh] w-full overflow-hidden bg-dusk lg:h-auto lg:min-h-0 lg:flex-1">
           <VineScene apiRef={apiRef} nodeCount={nodeCount} />
-
-          {/* Feedback: seal + counter, built from type + light only */}
-          <div className="pointer-events-none absolute inset-x-0 top-0 flex items-start justify-between p-5">
-            <span className="font-mono text-xs tracking-[0.3em] text-[#cfe0c4]/70 uppercase">
-              Jardim
-            </span>
-            <span className="font-heading text-4xl tabular-nums text-[#cfe0c4]/80">
-              {bloomed ? "01" : "00"}
-            </span>
-          </div>
-          <div
-            className={`pointer-events-none absolute inset-x-0 bottom-8 flex justify-center transition-all duration-700 ${
-              bloomed ? "translate-y-0 opacity-100" : "translate-y-3 opacity-0"
-            }`}
-          >
-            <span className="border border-bloom/60 px-4 py-1.5 font-mono text-sm tracking-[0.4em] text-bloom uppercase">
-              Floresceu
-            </span>
-          </div>
 
           {/* Acanthus corners framing the panel */}
           <AcanthusCorner className="absolute top-3 left-3 h-14 w-14 text-[#cfe0c4]/30" />
