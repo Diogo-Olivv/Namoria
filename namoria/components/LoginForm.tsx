@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { createClient } from "@/lib/supabase/client";
+import { login } from "@/lib/auth/actions";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -17,10 +17,9 @@ export function LoginForm({ redirect }: { redirect: string }) {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     setLoading(true);
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    const { error } = await login({ email, password });
     if (error) {
-      console.error("Supabase login error:", error.message);
+      console.error("Supabase login error:", error);
       toast.error("E-mail ou senha inválidos.");
       setLoading(false);
       return;

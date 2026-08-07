@@ -160,35 +160,35 @@ export function Viewer({
         </span>
         <div className="flex items-center gap-2">
           <Button
-            size="icon-sm"
+            size="icon"
             aria-label="Editar nome e data"
             onClick={openEdit}
-            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            className="size-11 border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20 [&_svg]:size-5"
           >
             <Pencil />
           </Button>
           <Button
-            size="icon-sm"
+            size="icon"
             aria-label="Baixar original"
             onClick={download}
             disabled={downloading}
-            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            className="size-11 border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20 [&_svg]:size-5"
           >
             <Download />
           </Button>
           <Button
-            size="icon-sm"
+            size="icon"
             aria-label="Excluir"
             onClick={() => setDelOpen(true)}
-            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            className="size-11 border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20 [&_svg]:size-5"
           >
             <Trash2 />
           </Button>
           <Button
-            size="icon-sm"
+            size="icon"
             aria-label="Fechar"
             onClick={onClose}
-            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            className="size-11 border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20 [&_svg]:size-5"
           >
             <X />
           </Button>
@@ -217,7 +217,15 @@ export function Viewer({
                     poster={displayUrl}
                     controls
                     playsInline
-                    className="max-h-full max-w-full"
+                    className="h-full w-full object-contain"
+                  />
+                ) : displayUrl ? (
+                  // Show the poster (display_key) while the original is signed.
+                  // eslint-disable-next-line @next/next/no-img-element -- presigned URL rotates
+                  <img
+                    src={displayUrl}
+                    alt={m.title ?? ""}
+                    className="h-full w-full object-contain"
                   />
                 ) : (
                   <div className="text-white/70">Carregando vídeo…</div>
@@ -227,7 +235,7 @@ export function Viewer({
                 <img
                   src={displayUrl}
                   alt={m.title ?? ""}
-                  className="max-h-full max-w-full object-contain"
+                  className="h-full w-full object-contain"
                 />
               ) : (
                 <div className="text-white/70">Carregando…</div>
@@ -237,9 +245,9 @@ export function Viewer({
         })}
       </Swiper>
 
-      {/* Caption: name + date */}
+      {/* Caption: name + date — overlaid at the top, below the action icons */}
       {(current.title || current.taken_at) && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 z-10 bg-gradient-to-t from-black/80 to-transparent p-4 pt-10 text-center">
+        <div className="pointer-events-none absolute inset-x-0 top-0 z-[5] bg-gradient-to-b from-black/70 to-transparent px-4 pt-16 pb-10 text-center">
           {current.title && (
             <p className="font-heading text-xl font-medium text-white drop-shadow">
               {current.title}
