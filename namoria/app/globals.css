@@ -9,40 +9,42 @@
    Light values on :root, dark overrides on .dark.
    ============================================================ */
 :root {
+  color-scheme: light;
   --radius: 0.75rem;
 
-  --background: oklch(0.99 0.008 320);
-  --foreground: oklch(0.22 0.03 280);
+  --background: oklch(0.985 0.006 340);
+  --foreground: oklch(0.21 0.03 280);
 
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.22 0.03 280);
+  --card-foreground: oklch(0.21 0.03 280);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.22 0.03 280);
+  --popover-foreground: oklch(0.21 0.03 280);
 
-  --primary: oklch(0.55 0.2 258); /* blue */
+  --primary: oklch(0.54 0.21 258); /* blue */
   --primary-foreground: oklch(0.99 0.01 260);
 
-  --secondary: oklch(0.95 0.035 350); /* soft pink surface */
-  --secondary-foreground: oklch(0.4 0.12 350);
+  --secondary: oklch(0.95 0.04 350); /* soft pink surface */
+  --secondary-foreground: oklch(0.4 0.13 350);
 
-  --muted: oklch(0.96 0.012 300);
-  --muted-foreground: oklch(0.5 0.03 285);
+  --muted: oklch(0.965 0.01 320);
+  --muted-foreground: oklch(0.48 0.03 285);
 
-  --accent: oklch(0.65 0.19 350); /* pink */
+  --accent: oklch(0.64 0.2 350); /* pink */
   --accent-foreground: oklch(0.99 0.01 340);
 
   --destructive: oklch(0.58 0.22 27);
 
-  --border: oklch(0.9 0.015 300);
-  --input: oklch(0.9 0.015 300);
-  --ring: oklch(0.55 0.2 258);
+  --border: oklch(0.9 0.015 320);
+  --input: oklch(0.9 0.015 320);
+  --ring: oklch(0.54 0.21 258);
 
   /* Brand anchors used for gradients/highlights */
-  --brand-blue: oklch(0.58 0.2 258);
-  --brand-pink: oklch(0.66 0.2 350);
+  --brand-blue: oklch(0.55 0.21 258);
+  --brand-pink: oklch(0.64 0.21 350);
 }
 
 .dark {
+  color-scheme: dark;
   --background: oklch(0.17 0.022 278);
   --foreground: oklch(0.97 0.012 320);
 
@@ -113,12 +115,18 @@
   }
   html {
     @apply font-sans;
-    color-scheme: dark;
   }
   body {
     @apply bg-background text-foreground;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+  }
+  /* Pointer cursor on all interactive controls */
+  button:not(:disabled),
+  [role="button"]:not(:disabled),
+  label[for],
+  summary {
+    cursor: pointer;
   }
 }
 
@@ -153,6 +161,18 @@
 .no-scrollbar {
   -ms-overflow-style: none;
   scrollbar-width: none;
+}
+
+/* Swiper viewer: keep each slide's media perfectly centered */
+.swiper,
+.swiper-wrapper,
+.swiper-slide {
+  height: 100%;
+}
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* react-masonry-css grid */

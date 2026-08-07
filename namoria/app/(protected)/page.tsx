@@ -3,6 +3,7 @@ import { Heart } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { presignGet } from "@/lib/r2";
 import { CreateAlbumButton } from "@/components/CreateAlbumButton";
+import { CoverCollage } from "@/components/CoverCollage";
 import type { Album } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -15,11 +16,21 @@ export default async function HomePage() {
     .order("created_at", { ascending: false });
   const albums = (data ?? []) as Album[];
 
-  // Sign covers server-side so the grid paints without a client round-trip.
+  // Build each cover from the album's 4 most recent thumbnails, signed
+  // server-side so the grid paints without a client round-trip.
   const covers = await Promise.all(
-    albums.map(async (a) =>
-      a.cover_key ? await presignGet(a.cover_key) : null,
-    ),
+    albums.map(async (album) => {
+      const { data: media } = await supabase
+        .from("media")
+        .select("display_key")
+        .eq("album_id", album.id)
+        .order("created_at", { ascending: false })
+        .limit(4);
+      const keys = (media ?? []).map(
+        (m) => (m as { display_key: string }).display_key,
+      );
+      return Promise.all(keys.map((k) => presignGet(k)));
+    }),
   );
 
   return (
@@ -47,17 +58,8 @@ export default async function HomePage() {
               href={`/album/${album.id}`}
               className="group relative flex aspect-[4/3] flex-col justify-end overflow-hidden rounded-2xl ring-1 ring-foreground/10 transition-shadow hover:ring-2 hover:ring-brand-pink/50"
             >
-              {covers[i] ? (
-                // eslint-disable-next-line @next/next/no-img-element -- presigned URL rotates; next/image loader can't cache it
-                <img
-                  src={covers[i]!}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                />
-              ) : (
-                <div className="bg-brand absolute inset-0 opacity-80" />
-              )}
-              <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 to-transparent" />
+              <CoverCollage urls={covers[i]} />
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 to-transparent" />
               <div className="relative p-4">
                 <h2 className="text-lg font-semibold text-white drop-shadow">
                   {album.title}

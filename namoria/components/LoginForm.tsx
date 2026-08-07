@@ -20,6 +20,7 @@ export function LoginForm({ redirect }: { redirect: string }) {
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
+      console.error("Supabase login error:", error.message);
       toast.error("E-mail ou senha inválidos.");
       setLoading(false);
       return;

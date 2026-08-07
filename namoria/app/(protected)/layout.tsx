@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { LogoutButton } from "@/components/LogoutButton";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default async function ProtectedLayout({
   children,
@@ -23,7 +24,10 @@ export default async function ProtectedLayout({
         >
           Namoria
         </Link>
-        <LogoutButton />
+        <div className="flex items-center gap-1">
+          <ThemeToggle />
+          <LogoutButton />
+        </div>
       </header>
       <main className="flex-1">{children}</main>
     </div>
