@@ -38,7 +38,9 @@ export function UploadFab({
     const files = Array.from(e.target.files ?? []);
     e.target.value = ""; // allow re-selecting the same file
     if (files.length === 0) return;
-    setDateValue(today());
+    // Default to the file's own date (last-modified); fall back to today.
+    const ms = files[0].lastModified;
+    setDateValue(ms ? toDateInput(new Date(ms).toISOString()) : today());
     setPending(files);
   }
 
