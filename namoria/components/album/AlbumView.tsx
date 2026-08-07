@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { ImagePlus } from "lucide-react";
 import { signKeys } from "@/lib/sign";
 import { MediaMasonry } from "@/components/album/MediaMasonry";
 import { Viewer } from "@/components/album/Viewer";
@@ -53,9 +54,14 @@ export function AlbumView({
   return (
     <>
       {media.length === 0 ? (
-        <div className="mt-24 flex flex-col items-center gap-2 text-center text-muted">
-          <p className="text-lg">Álbum vazio.</p>
-          <p className="text-sm">Toque em + para enviar fotos e vídeos.</p>
+        <div className="mt-20 flex flex-col items-center gap-2 text-center">
+          <div className="bg-brand flex size-14 items-center justify-center rounded-2xl text-white shadow-lg shadow-brand-pink/20">
+            <ImagePlus className="size-7" />
+          </div>
+          <p className="mt-2 text-lg font-medium">Álbum vazio</p>
+          <p className="text-sm text-muted-foreground">
+            Toque em + para enviar fotos e vídeos.
+          </p>
         </div>
       ) : (
         <MediaMasonry

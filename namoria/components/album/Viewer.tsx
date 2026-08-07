@@ -3,7 +3,9 @@
 import { useCallback, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Keyboard } from "swiper/modules";
+import { Download, X } from "lucide-react";
 import "swiper/css";
+import { Button } from "@/components/ui/button";
 import { signKey } from "@/lib/sign";
 import type { Media } from "@/lib/types";
 
@@ -75,24 +77,27 @@ export function Viewer({
     <div className="fixed inset-0 z-50 flex flex-col bg-black">
       {/* Top bar */}
       <div className="absolute inset-x-0 top-0 z-10 flex items-center justify-between p-3">
-        <span className="rounded-md bg-black/50 px-2 py-1 text-sm text-white/80">
+        <span className="rounded-md bg-white/10 px-2.5 py-1 text-sm text-white/90 backdrop-blur tabular-nums">
           {active + 1} / {media.length}
         </span>
         <div className="flex items-center gap-2">
-          <button
+          <Button
+            size="sm"
             onClick={download}
             disabled={downloading}
-            className="rounded-lg bg-white/10 px-3 py-1.5 text-sm text-white backdrop-blur hover:bg-white/20 disabled:opacity-60"
+            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
           >
+            <Download />
             {downloading ? "Baixando…" : "Baixar original"}
-          </button>
-          <button
-            onClick={onClose}
+          </Button>
+          <Button
+            size="icon-sm"
             aria-label="Fechar"
-            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white/10 text-white backdrop-blur hover:bg-white/20"
+            onClick={onClose}
+            className="border-0 bg-white/10 text-white backdrop-blur hover:bg-white/20"
           >
-            ✕
-          </button>
+            <X />
+          </Button>
         </div>
       </div>
 

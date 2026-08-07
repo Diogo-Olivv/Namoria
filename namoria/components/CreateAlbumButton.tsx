@@ -2,6 +2,21 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Plus } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+  DialogClose,
+} from "@/components/ui/dialog";
 import type { Album } from "@/lib/types";
 
 export function CreateAlbumButton() {
@@ -10,20 +25,19 @@ export function CreateAlbumButton() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [saving, setSaving] = useState(false);
-  const [error, setError] = useState<string | null>(null);
 
-  function close() {
-    setOpen(false);
-    setTitle("");
-    setDescription("");
-    setError(null);
+  function onOpenChange(next: boolean) {
+    setOpen(next);
+    if (!next) {
+      setTitle("");
+      setDescription("");
+    }
   }
 
   async function submit(e: React.FormEvent) {
     e.preventDefault();
     if (!title.trim()) return;
     setSaving(true);
-    setError(null);
     const res = await fetch("/api/albums", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -31,71 +45,65 @@ export function CreateAlbumButton() {
     });
     setSaving(false);
     if (!res.ok) {
-      setError("Não foi possível criar o álbum.");
+      toast.error("Não foi possível criar o álbum.");
       return;
     }
     const { album } = (await res.json()) as { album: Album };
-    close();
+    onOpenChange(false);
     router.push(`/album/${album.id}`);
     router.refresh();
   }
 
   return (
-    <>
-      <button
-        onClick={() => setOpen(true)}
-        className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground"
-      >
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <Button variant="brand" size="lg" onClick={() => setOpen(true)}>
+        <Plus />
         Novo álbum
-      </button>
+      </Button>
 
-      {open && (
-        <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-black/70 p-4 sm:items-center"
-          onClick={close}
-        >
-          <form
-            onClick={(e) => e.stopPropagation()}
-            onSubmit={submit}
-            className="w-full max-w-md rounded-2xl border border-border bg-surface p-5"
-          >
-            <h2 className="mb-4 text-lg font-semibold">Novo álbum</h2>
-            <div className="flex flex-col gap-3">
-              <input
-                autoFocus
-                placeholder="Título"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-accent"
-              />
-              <textarea
-                placeholder="Descrição (opcional)"
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-                rows={3}
-                className="resize-none rounded-xl border border-border bg-background px-4 py-3 outline-none focus:border-accent"
-              />
-              {error && <p className="text-sm text-red-400">{error}</p>}
-            </div>
-            <div className="mt-5 flex justify-end gap-2">
-              <button
-                type="button"
-                onClick={close}
-                className="rounded-xl px-4 py-2 text-sm text-muted hover:text-foreground"
-              >
-                Cancelar
-              </button>
-              <button
-                type="submit"
-                disabled={saving || !title.trim()}
-                className="rounded-xl bg-accent px-4 py-2 text-sm font-medium text-accent-foreground disabled:opacity-60"
-              >
-                {saving ? "Criando…" : "Criar"}
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-    </>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Novo álbum</DialogTitle>
+          <DialogDescription>
+            Dê um nome para guardar as memórias de vocês.
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={submit} className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="album-title">Título</Label>
+            <Input
+              id="album-title"
+              autoFocus
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="h-10"
+            />
+          </div>
+          <div className="flex flex-col gap-2">
+            <Label htmlFor="album-desc">Descrição (opcional)</Label>
+            <Textarea
+              id="album-desc"
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </div>
+
+          <DialogFooter className="mt-1">
+            <DialogClose render={<Button type="button" variant="ghost" />}>
+              Cancelar
+            </DialogClose>
+            <Button
+              type="submit"
+              variant="brand"
+              disabled={saving || !title.trim()}
+            >
+              {saving ? "Criando…" : "Criar"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 }

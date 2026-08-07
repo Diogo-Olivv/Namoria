@@ -1,7 +1,9 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { LogOut } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 
 export function LogoutButton() {
   const router = useRouter();
@@ -14,11 +16,9 @@ export function LogoutButton() {
   }
 
   return (
-    <button
-      onClick={logout}
-      className="rounded-lg px-3 py-1.5 text-sm text-muted transition-colors hover:bg-surface hover:text-foreground"
-    >
+    <Button variant="ghost" size="sm" onClick={logout}>
+      <LogOut />
       Sair
-    </button>
+    </Button>
   );
 }

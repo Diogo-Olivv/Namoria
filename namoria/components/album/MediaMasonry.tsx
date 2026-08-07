@@ -1,24 +1,25 @@
 "use client";
 
 import Masonry from "react-masonry-css";
+import { Play } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
 import { formatDuration } from "@/lib/format";
 import type { Media } from "@/lib/types";
 
 const BREAKPOINTS = { default: 3, 640: 2 };
 
-function PlayBadge({ duration }: { duration: number | null }) {
+function VideoOverlay({ duration }: { duration: number | null }) {
   return (
     <>
       <div className="absolute inset-0 flex items-center justify-center">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-black/50">
-          <svg viewBox="0 0 24 24" className="h-6 w-6 translate-x-0.5 fill-white">
-            <path d="M8 5v14l11-7z" />
-          </svg>
+        <div className="bg-brand flex size-11 items-center justify-center rounded-full text-white shadow-lg">
+          <Play className="size-5 translate-x-0.5" fill="currentColor" />
         </div>
       </div>
-      <span className="absolute bottom-2 right-2 rounded-md bg-black/70 px-1.5 py-0.5 text-xs text-white">
+      <Badge className="absolute right-2 bottom-2 bg-black/70 text-white tabular-nums">
         {formatDuration(duration)}
-      </span>
+      </Badge>
     </>
   );
 }
@@ -47,7 +48,7 @@ export function MediaMasonry({
           <button
             key={m.id}
             onClick={() => onOpen(i)}
-            className="relative block w-full overflow-hidden rounded-xl border border-border bg-surface"
+            className="relative block w-full overflow-hidden rounded-xl ring-1 ring-foreground/10 transition-transform active:scale-[0.98]"
             style={{ aspectRatio: ratio }}
           >
             {url ? (
@@ -58,12 +59,12 @@ export function MediaMasonry({
                 loading="lazy"
                 className="h-full w-full object-cover"
               />
+            ) : signing ? (
+              <Skeleton className="h-full w-full" />
             ) : (
-              <div
-                className={`h-full w-full bg-surface-2 ${signing ? "animate-pulse" : ""}`}
-              />
+              <div className="h-full w-full bg-muted" />
             )}
-            {m.type === "video" && url && <PlayBadge duration={m.duration} />}
+            {m.type === "video" && url && <VideoOverlay duration={m.duration} />}
           </button>
         );
       })}

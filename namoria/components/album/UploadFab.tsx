@@ -1,7 +1,9 @@
 "use client";
 
 import { useRef } from "react";
+import { Loader2, Plus, RotateCw } from "lucide-react";
 import { useUpload } from "@/lib/hooks/useUpload";
+import { Button } from "@/components/ui/button";
 import type { Media } from "@/lib/types";
 
 export function UploadFab({
@@ -27,8 +29,7 @@ export function UploadFab({
     if (media) onUploaded([media]);
   }
 
-  const activeTasks = tasks.filter((t) => t.status !== "done");
-  const hasErrors = tasks.some((t) => t.status === "error");
+  const showPanel = tasks.some((t) => t.status !== "done" || isUploading);
 
   return (
     <>
@@ -41,69 +42,71 @@ export function UploadFab({
         onChange={onFiles}
       />
 
-      <button
+      <Button
+        variant="brand"
+        size="icon-lg"
         onClick={() => inputRef.current?.click()}
         disabled={isUploading}
         aria-label="Enviar mídia"
-        className="fixed bottom-6 right-6 z-30 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-3xl text-accent-foreground shadow-lg transition-transform active:scale-95 disabled:opacity-70"
+        className="fixed right-6 bottom-6 z-30 size-14 rounded-full shadow-xl shadow-brand-pink/25 [&_svg:not([class*='size-'])]:size-6"
       >
-        {isUploading ? (
-          <span className="h-5 w-5 animate-spin rounded-full border-2 border-accent-foreground/40 border-t-accent-foreground" />
-        ) : (
-          "+"
-        )}
-      </button>
+        {isUploading ? <Loader2 className="animate-spin" /> : <Plus />}
+      </Button>
 
-      {tasks.length > 0 && (activeTasks.length > 0 || hasErrors) && (
-        <div className="fixed bottom-24 right-6 z-30 w-72 max-w-[calc(100vw-3rem)] rounded-2xl border border-border bg-surface p-3 shadow-xl">
+      {tasks.length > 0 && showPanel && (
+        <div className="fixed right-6 bottom-24 z-30 w-72 max-w-[calc(100vw-3rem)] rounded-2xl bg-card p-3 ring-1 ring-foreground/10 shadow-xl">
           <div className="mb-2 flex items-center justify-between">
             <span className="text-sm font-medium">Enviando</span>
             {!isUploading && (
               <button
                 onClick={reset}
-                className="text-xs text-muted hover:text-foreground"
+                className="text-xs text-muted-foreground transition-colors hover:text-foreground"
               >
                 Limpar
               </button>
             )}
           </div>
-          <ul className="flex max-h-56 flex-col gap-2 overflow-y-auto">
+          <ul className="flex max-h-56 flex-col gap-2.5 overflow-y-auto">
             {tasks.map((t) => (
               <li key={t.id} className="text-xs">
                 <div className="mb-1 flex items-center justify-between gap-2">
-                  <span className="truncate text-muted">{t.name}</span>
+                  <span className="truncate text-muted-foreground">{t.name}</span>
                   <span
                     className={
                       t.status === "error"
-                        ? "text-red-400"
+                        ? "text-destructive"
                         : t.status === "done"
-                          ? "text-green-400"
-                          : "text-muted"
+                          ? "text-brand-blue"
+                          : "text-muted-foreground tabular-nums"
                     }
                   >
                     {t.status === "error"
                       ? "erro"
                       : t.status === "done"
-                        ? "ok"
+                        ? "✓"
                         : `${Math.round(t.progress * 100)}%`}
                   </span>
                 </div>
-                <div className="h-1 overflow-hidden rounded-full bg-surface-2">
+                <div className="h-1.5 overflow-hidden rounded-full bg-muted">
                   <div
-                    className={`h-full rounded-full ${t.status === "error" ? "bg-red-400" : "bg-accent"}`}
+                    className={`h-full rounded-full transition-all ${
+                      t.status === "error" ? "bg-destructive" : "bg-brand"
+                    }`}
                     style={{ width: `${Math.round(t.progress * 100)}%` }}
                   />
                 </div>
                 {t.status === "error" && (
                   <div className="mt-1 flex items-center justify-between gap-2">
-                    <span className="truncate text-red-400">{t.error}</span>
-                    <button
+                    <span className="truncate text-destructive">{t.error}</span>
+                    <Button
+                      variant="ghost"
+                      size="xs"
                       onClick={() => onRetry(t.id)}
                       disabled={isUploading}
-                      className="shrink-0 rounded-md bg-surface-2 px-2 py-0.5 text-xs text-foreground hover:bg-border disabled:opacity-60"
                     >
-                      Tentar de novo
-                    </button>
+                      <RotateCw />
+                      Tentar
+                    </Button>
                   </div>
                 )}
               </li>

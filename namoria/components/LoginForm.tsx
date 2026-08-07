@@ -2,23 +2,25 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 export function LoginForm({ redirect }: { redirect: string }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    setError(null);
     setLoading(true);
     const supabase = createClient();
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      setError("E-mail ou senha inválidos.");
+      toast.error("E-mail ou senha inválidos.");
       setLoading(false);
       return;
     }
@@ -27,45 +29,41 @@ export function LoginForm({ redirect }: { redirect: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full max-w-sm flex-col gap-4">
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="email" className="text-sm text-muted">
-          E-mail
-        </label>
-        <input
+    <form onSubmit={onSubmit} className="flex w-full max-w-sm flex-col gap-5">
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="email">E-mail</Label>
+        <Input
           id="email"
           type="email"
           autoComplete="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="rounded-xl border border-border bg-surface px-4 py-3 text-base outline-none focus:border-accent"
+          className="h-11"
         />
       </div>
-      <div className="flex flex-col gap-1.5">
-        <label htmlFor="password" className="text-sm text-muted">
-          Senha
-        </label>
-        <input
+      <div className="flex flex-col gap-2">
+        <Label htmlFor="password">Senha</Label>
+        <Input
           id="password"
           type="password"
           autoComplete="current-password"
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="rounded-xl border border-border bg-surface px-4 py-3 text-base outline-none focus:border-accent"
+          className="h-11"
         />
       </div>
 
-      {error && <p className="text-sm text-red-400">{error}</p>}
-
-      <button
+      <Button
         type="submit"
+        variant="brand"
+        size="lg"
         disabled={loading}
-        className="mt-2 rounded-xl bg-accent px-4 py-3 font-medium text-accent-foreground transition-opacity disabled:opacity-60"
+        className="mt-1 h-11 text-base"
       >
         {loading ? "Entrando…" : "Entrar"}
-      </button>
+      </Button>
     </form>
   );
 }

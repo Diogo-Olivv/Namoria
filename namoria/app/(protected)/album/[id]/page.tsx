@@ -24,12 +24,17 @@ export default async function AlbumPage({ params }: PageProps<"/album/[id]">) {
   return (
     <div className="mx-auto w-full max-w-5xl p-4">
       <div className="mb-4">
-        <Link href="/" className="text-sm text-muted hover:text-foreground">
+        <Link
+          href="/"
+          className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
           ← Álbuns
         </Link>
         <h1 className="mt-2 text-2xl font-semibold">{(album as Album).title}</h1>
         {(album as Album).description && (
-          <p className="mt-1 text-muted">{(album as Album).description}</p>
+          <p className="mt-1 text-muted-foreground">
+            {(album as Album).description}
+          </p>
         )}
       </div>
 
