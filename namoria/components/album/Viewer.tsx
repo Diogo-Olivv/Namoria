@@ -277,11 +277,15 @@ export function Viewer({
               <Input
                 id="media-title"
                 autoFocus
+                maxLength={25}
                 placeholder="Ex: Nosso primeiro passeio"
                 value={editTitle}
                 onChange={(e) => setEditTitle(e.target.value)}
                 className="h-10"
               />
+              <span className="self-end text-xs text-muted-foreground tabular-nums">
+                {editTitle.length}/25
+              </span>
             </div>
             <div className="flex flex-col gap-2">
               <Label htmlFor="media-date">Data</Label>

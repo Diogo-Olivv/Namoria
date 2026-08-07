@@ -17,10 +17,10 @@ export default async function ProtectedLayout({
 
   return (
     <div className="flex min-h-full flex-col">
-      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-md">
+      <header className="sticky top-0 z-20 flex items-center justify-between border-b border-border bg-background/70 px-4 py-3 backdrop-blur-md lg:px-8 lg:py-4">
         <Link
           href="/"
-          className="text-brand font-heading text-2xl font-semibold tracking-tight"
+          className="text-brand font-heading text-2xl font-semibold tracking-tight lg:text-3xl"
         >
           Namoria
         </Link>

@@ -5,74 +5,100 @@
 @custom-variant dark (&:is(.dark *));
 
 /* ============================================================
-   Palette — Blue × Pink contrast (dark-first couple album app)
-   Light values on :root, dark overrides on .dark.
+   Palette — Cottagecore / Farmhouse + Acanthus
+   Light (daylight over paper) on :root, dark (garden at dusk) on .dark.
+   Raw cottagecore anchors kept as named tokens so both themes + the 3D
+   scene share one source of truth.
    ============================================================ */
 :root {
   color-scheme: light;
-  --radius: 0.75rem;
+  --radius: 0.5rem; /* squarer, hand-set feel */
 
-  --background: oklch(0.985 0.006 340);
-  --foreground: oklch(0.21 0.03 280);
+  /* Named cottagecore anchors */
+  --paper: #f4efe6; /* linen/cream ground */
+  --ink: #2b2a26; /* ink-brown text */
+  --sage: #a7b99a; /* machine green */
+  --forest: #2f4a2c; /* acanthus green (anchor) */
+  --dusk-panel: #16241a; /* fixed 3D panel bg */
+  --blue: #7c97a6; /* dusty blue */
+  --blush: #d8a7a0; /* rose */
+  --lavender: #9a8cb0; /* muted purple */
+  --bloom: #c98bb0; /* validation accent (the bloom) */
 
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.21 0.03 280);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.21 0.03 280);
+  --background: var(--paper);
+  --foreground: var(--ink);
 
-  --primary: oklch(0.54 0.21 258); /* blue */
-  --primary-foreground: oklch(0.99 0.01 260);
+  --card: #fbf8f1; /* paper, a shade lighter */
+  --card-foreground: var(--ink);
+  --popover: #fbf8f1;
+  --popover-foreground: var(--ink);
 
-  --secondary: oklch(0.95 0.04 350); /* soft pink surface */
-  --secondary-foreground: oklch(0.4 0.13 350);
+  --primary: var(--forest);
+  --primary-foreground: #f6f2e9;
 
-  --muted: oklch(0.965 0.01 320);
-  --muted-foreground: oklch(0.48 0.03 285);
+  --secondary: #e6ebdd; /* pale sage surface */
+  --secondary-foreground: #26371f;
 
-  --accent: oklch(0.64 0.2 350); /* pink */
-  --accent-foreground: oklch(0.99 0.01 340);
+  --muted: #ece7da;
+  --muted-foreground: #6d685c;
 
-  --destructive: oklch(0.58 0.22 27);
+  --accent: var(--bloom);
+  --accent-foreground: #3a2333;
 
-  --border: oklch(0.9 0.015 320);
-  --input: oklch(0.9 0.015 320);
-  --ring: oklch(0.54 0.21 258);
+  --destructive: #b5533f; /* terracotta, not neon red */
 
-  /* Brand anchors used for gradients/highlights */
-  --brand-blue: oklch(0.55 0.21 258);
-  --brand-pink: oklch(0.64 0.21 350);
+  --border: #ddd7c7; /* warm sage-paper hairline */
+  --input: #d9d3c2;
+  --ring: var(--forest);
+
+  /* Brand anchors used by bg-brand / text-brand gradients + shadows/rings.
+     Names kept (blue/pink) so existing utility classes keep resolving; the
+     gradient now runs forest → bloom. */
+  --brand-blue: var(--forest);
+  --brand-pink: var(--bloom);
 }
 
 .dark {
   color-scheme: dark;
-  --background: oklch(0.17 0.022 278);
-  --foreground: oklch(0.97 0.012 320);
 
-  --card: oklch(0.21 0.026 278);
-  --card-foreground: oklch(0.97 0.012 320);
-  --popover: oklch(0.21 0.026 278);
-  --popover-foreground: oklch(0.97 0.012 320);
+  --paper: #f4efe6;
+  --ink: #2b2a26;
+  --sage: #8fb08a;
+  --forest: #3a5c37;
+  --dusk-panel: #16241a;
+  --blue: #8fa9b6;
+  --blush: #e0b3ac;
+  --lavender: #b0a3c6;
+  --bloom: #d79fc1;
 
-  --primary: oklch(0.64 0.19 258); /* blue */
-  --primary-foreground: oklch(0.99 0.01 260);
+  --background: #12201a; /* garden at dusk */
+  --foreground: #ece7da;
 
-  --secondary: oklch(0.31 0.085 348); /* deep pink surface */
-  --secondary-foreground: oklch(0.96 0.02 340);
+  --card: #182a20;
+  --card-foreground: #ece7da;
+  --popover: #182a20;
+  --popover-foreground: #ece7da;
 
-  --muted: oklch(0.27 0.02 278);
-  --muted-foreground: oklch(0.73 0.03 300);
+  --primary: #9dbf95; /* lighter green for contrast on dark */
+  --primary-foreground: #12201a;
 
-  --accent: oklch(0.68 0.2 350); /* pink */
-  --accent-foreground: oklch(0.99 0.01 340);
+  --secondary: #223528; /* deep moss surface */
+  --secondary-foreground: #e6ecdd;
 
-  --destructive: oklch(0.7 0.19 22);
+  --muted: #1e2f25;
+  --muted-foreground: #a9b6a4;
+
+  --accent: #d79fc1;
+  --accent-foreground: #2a1622;
+
+  --destructive: #d0705c;
 
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 16%);
-  --ring: oklch(0.64 0.19 258);
+  --ring: #9dbf95;
 
-  --brand-blue: oklch(0.64 0.19 258);
-  --brand-pink: oklch(0.7 0.2 350);
+  --brand-blue: #9dbf95;
+  --brand-pink: #d79fc1;
 }
 
 @theme inline {
@@ -98,9 +124,20 @@
   --color-brand-blue: var(--brand-blue);
   --color-brand-pink: var(--brand-pink);
 
-  --font-sans: var(--font-geist-sans);
+  /* Cottagecore named colors — usable as bg-forest, text-bloom, etc. */
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-sage: var(--sage);
+  --color-forest: var(--forest);
+  --color-dusk: var(--dusk-panel);
+  --color-blue: var(--blue);
+  --color-blush: var(--blush);
+  --color-lavender: var(--lavender);
+  --color-bloom: var(--bloom);
+
+  --font-sans: var(--font-eb-garamond), Georgia, serif;
   --font-mono: var(--font-geist-mono);
-  --font-heading: Georgia, "Times New Roman", "Nimbus Roman", serif;
+  --font-heading: var(--font-fraunces), Georgia, "Times New Roman", serif;
 
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);

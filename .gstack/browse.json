@@ -1,0 +1,9 @@
+{
+  "pid": 667728,
+  "port": 15810,
+  "token": "fa0d3012-ddf3-40d3-a8ce-5896a575d645",
+  "startedAt": "2026-08-07T21:21:00.270Z",
+  "serverPath": "/home/diogo/.claude/skills/gstack/browse/src/server.ts",
+  "mode": "launched",
+  "configHash": "303a7eeccc03078b"
+}

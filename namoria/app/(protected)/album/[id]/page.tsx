@@ -24,7 +24,7 @@ export default async function AlbumPage({ params }: PageProps<"/album/[id]">) {
   if (!album) notFound();
 
   return (
-    <div className="mx-auto w-full max-w-5xl p-4">
+    <div className="mx-auto w-full max-w-5xl p-4 lg:max-w-6xl lg:p-8">
       <Link
         href="/"
         className="text-sm text-muted-foreground transition-colors hover:text-foreground"

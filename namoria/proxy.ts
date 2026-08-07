@@ -3,7 +3,7 @@ import { createServerClient } from "@supabase/ssr";
 import { publicEnv } from "@/lib/env";
 import { authCookieOptions } from "@/lib/supabase/cookie-options";
 
-const PUBLIC_PATHS = ["/login", "/auth"];
+const PUBLIC_PATHS = ["/login", "/auth", "/bem-vindos"];
 
 /**
  * Proxy (formerly "middleware" — renamed in Next.js 16). Refreshes the Supabase
@@ -47,8 +47,14 @@ export async function proxy(request: NextRequest) {
 
   if (!user && !isPublic) {
     const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    url.searchParams.set("redirect", pathname);
+    if (pathname === "/") {
+      // The site's home is the animated welcome page (which leads to /login).
+      url.pathname = "/bem-vindos";
+      url.search = "";
+    } else {
+      url.pathname = "/login";
+      url.searchParams.set("redirect", pathname);
+    }
     return NextResponse.redirect(url);
   }
 

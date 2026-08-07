@@ -29,9 +29,14 @@ export function LoginForm({ redirect }: { redirect: string }) {
   }
 
   return (
-    <form onSubmit={onSubmit} className="flex w-full max-w-sm flex-col gap-5">
+    <form
+      onSubmit={onSubmit}
+      className="flex w-full max-w-sm flex-col gap-5 sm:max-w-md lg:gap-6"
+    >
       <div className="flex flex-col gap-2">
-        <Label htmlFor="email">E-mail</Label>
+        <Label htmlFor="email" className="lg:text-base">
+          E-mail
+        </Label>
         <Input
           id="email"
           type="email"
@@ -39,11 +44,13 @@ export function LoginForm({ redirect }: { redirect: string }) {
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="h-11"
+          className="h-11 lg:h-12 lg:text-base"
         />
       </div>
       <div className="flex flex-col gap-2">
-        <Label htmlFor="password">Senha</Label>
+        <Label htmlFor="password" className="lg:text-base">
+          Senha
+        </Label>
         <Input
           id="password"
           type="password"
@@ -51,7 +58,7 @@ export function LoginForm({ redirect }: { redirect: string }) {
           required
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          className="h-11"
+          className="h-11 lg:h-12 lg:text-base"
         />
       </div>
 
@@ -60,7 +67,7 @@ export function LoginForm({ redirect }: { redirect: string }) {
         variant="brand"
         size="lg"
         disabled={loading}
-        className="mt-1 h-11 text-base"
+        className="mt-1 h-11 text-base lg:h-12 lg:text-lg"
       >
         {loading ? "Entrando…" : "Entrar"}
       </Button>

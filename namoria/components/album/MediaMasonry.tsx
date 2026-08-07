@@ -7,7 +7,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDuration } from "@/lib/format";
 import type { Media } from "@/lib/types";
 
-const BREAKPOINTS = { default: 3, 640: 2 };
+const BREAKPOINTS = { default: 4, 1024: 3, 640: 2 };
 
 function VideoOverlay({ duration }: { duration: number | null }) {
   return (

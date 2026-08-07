@@ -1,0 +1,55 @@
+[2026-08-07T21:21:01.079Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:21:01.289Z] [log] [HMR] connected
+[2026-08-07T21:21:01.523Z] [error] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (http://localhost:3000/_next/static/chunks/_01l_ofl._.js:492:214)
+    at LandingHero (http://localhost:3000/_next/static/chunks/_01l_ofl._.js:318:227)
+    at BemVindosPage (about://React/Server/file:///home/diogo/Coding/Projetos/Namoria/namoria/.next/dev/server/chunks/ssr/%5Broot-of-the-server%5D__0euawz2._.js?9:49:264)
+[2026-08-07T21:21:01.555Z] [error] Base UI: A component that acts as a button expected a native <button> because the `nativeButton` prop is true. Rendering a non-<button> removes native button semantics, which can impact forms and accessibility. Use a real <button> in the `render` prop, or set `nativeButton` to `false`.
+    at Button (about://React/Server/file:///home/diogo/Coding/Projetos/Namoria/namoria/.next/dev/server/chunks/ssr/%5Broot-of-the-server%5D__0euawz2._.js?27:432:263)
+    at BemVindosPage (about://React/Server/file:///home/diogo/Coding/Projetos/Namoria/namoria/.next/dev/server/chunks/ssr/%5Broot-of-the-server%5D__0euawz2._.js?3:122:280)
+[2026-08-07T21:21:01.978Z] [warning] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+[2026-08-07T21:21:02.109Z] [warning] THREE.Clock: This module has been deprecated. Please use THREE.Timer instead.
+[2026-08-07T21:21:02.547Z] [warning] [.WebGL-0xfc030d1e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[2026-08-07T21:21:02.584Z] [warning] [.WebGL-0xfc030d1e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[2026-08-07T21:21:02.652Z] [warning] [.WebGL-0xfc030d1e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels
+[2026-08-07T21:21:02.676Z] [warning] [.WebGL-0xfc030d1e00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)
+[2026-08-07T21:21:52.810Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:21:52.833Z] [log] [Fast Refresh] done in 104ms
+[2026-08-07T21:22:03.758Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:22:03.831Z] [log] [Fast Refresh] done in 46ms
+[2026-08-07T21:22:08.373Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:22:08.424Z] [log] [Fast Refresh] done in 6ms
+[2026-08-07T21:22:13.472Z] [log] [Fast Refresh] done in 6ms
+[2026-08-07T21:22:13.576Z] [log] [Fast Refresh] done in 5131ms
+[2026-08-07T21:22:30.241Z] [log] [Fast Refresh] done in 5131ms
+[2026-08-07T21:22:30.318Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:22:30.350Z] [log] [HMR] connected
+[2026-08-07T21:23:19.953Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:23:19.976Z] [log] [Fast Refresh] done in 4ms
+[2026-08-07T21:23:24.239Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:23:24.266Z] [log] [Fast Refresh] done in 7ms
+[2026-08-07T21:23:44.784Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:23:44.801Z] [log] [HMR] connected
+[2026-08-07T21:24:38.172Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:24:38.192Z] [log] [HMR] connected
+[2026-08-07T21:25:26.395Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:25:26.445Z] [log] [Fast Refresh] done in 8ms
+[2026-08-07T21:25:35.978Z] [log] [Fast Refresh] done in 8ms
+[2026-08-07T21:25:36.047Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:25:36.061Z] [log] [HMR] connected
+[2026-08-07T21:25:59.497Z] [log] [Fast Refresh] rebuilding
+[2026-08-07T21:25:59.546Z] [log] [Fast Refresh] done in 6ms
+[2026-08-07T21:26:10.503Z] [info] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[2026-08-07T21:26:10.520Z] [log] [HMR] connected
+[2026-08-07T21:26:58.066Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:26:59.067Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:00.068Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:01.069Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:02.070Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:07.072Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:12.074Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:17.075Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:22.076Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:27.077Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:32.079Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
+[2026-08-07T21:27:37.080Z] [error] WebSocket connection to 'ws://localhost:3000/_next/hmr?id=8Iev1uw_cOD1znaCU68u3' failed: Error in connection establishment: net::ERR_CONNECTION_REFUSED
