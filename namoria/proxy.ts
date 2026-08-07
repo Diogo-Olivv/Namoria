@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { publicEnv } from "@/lib/env";
+import { authCookieOptions } from "@/lib/supabase/cookie-options";
 
 const PUBLIC_PATHS = ["/login", "/auth"];
 
@@ -15,6 +16,7 @@ export async function proxy(request: NextRequest) {
     publicEnv.supabaseUrl,
     publicEnv.supabaseAnonKey,
     {
+      cookieOptions: authCookieOptions,
       cookies: {
         getAll() {
           return request.cookies.getAll();
