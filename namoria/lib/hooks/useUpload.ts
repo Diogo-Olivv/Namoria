@@ -62,6 +62,8 @@ export function useUpload() {
   const [isUploading, setIsUploading] = useState(false);
   // Retain the source File per task so a failed upload can be retried.
   const filesRef = useRef<Map<string, File>>(new Map());
+  // Date chosen for the current batch (applies to retries too).
+  const takenAtRef = useRef<string | null>(null);
 
   const patch = useCallback((id: string, partial: Partial<UploadTask>) => {
     setTasks((prev) =>
@@ -70,7 +72,12 @@ export function useUpload() {
   }, []);
 
   const uploadOne = useCallback(
-    async (albumId: string, task: UploadTask, file: File): Promise<Media> => {
+    async (
+      albumId: string,
+      task: UploadTask,
+      file: File,
+      takenAt: string | null,
+    ): Promise<Media> => {
       const isVideo = file.type.startsWith("video/");
       patch(task.id, { status: "processing", progress: 0 });
 
@@ -121,13 +128,13 @@ export function useUpload() {
         }),
       ]);
 
-      // 4. Persist metadata. Default the moment's date to the file's
-      // last-modified time so photos are dated without manual input.
+      // 4. Persist metadata. Use the date chosen at upload time; fall back to
+      // the file's last-modified time so photos are always dated.
       const media = await insertMedia({
         album_id: albumId,
         type: isVideo ? "video" : "image",
         title: null,
-        taken_at: new Date(file.lastModified || Date.now()).toISOString(),
+        taken_at: takenAt ?? new Date(file.lastModified || Date.now()).toISOString(),
         display_key: web.key,
         original_key: vault.key,
         width,
@@ -144,7 +151,11 @@ export function useUpload() {
   );
 
   const upload = useCallback(
-    async (albumId: string, files: File[]): Promise<Media[]> => {
+    async (
+      albumId: string,
+      files: File[],
+      takenAt: string | null = null,
+    ): Promise<Media[]> => {
       const accepted = files.filter(
         (f) => f.type.startsWith("image/") || f.type.startsWith("video/"),
       );
@@ -156,6 +167,7 @@ export function useUpload() {
         progress: 0,
       }));
       filesRef.current = new Map(initial.map((t, i) => [t.id, accepted[i]]));
+      takenAtRef.current = takenAt;
       setTasks(initial);
       setIsUploading(true);
 
@@ -166,7 +178,7 @@ export function useUpload() {
         for (let i = 0; i < accepted.length; i++) {
           const task = initial[i];
           try {
-            created.push(await uploadOne(albumId, task, accepted[i]));
+            created.push(await uploadOne(albumId, task, accepted[i], takenAt));
           } catch (err) {
             patch(task.id, {
               status: "error",
@@ -190,7 +202,7 @@ export function useUpload() {
       if (!task || !file) return null;
       setIsUploading(true);
       try {
-        return await uploadOne(albumId, task, file);
+        return await uploadOne(albumId, task, file, takenAtRef.current);
       } catch (err) {
         patch(taskId, {
           status: "error",
